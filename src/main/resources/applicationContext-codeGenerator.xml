@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+        <bean id="mainService"
+            class="com.zl.codeGenerator.service.impl.MainServiceImpl">
+                <property name="configuration" ref="freemarkerConfiguration"/>
+                <property name="templatePath" value="F:/Program/Java/CodeGenerator/target/classes/templates"/>
+                <property name="moduleDir" value="F:/Program/Java/"/>
+                <property name="publicTemplates" ref="publicTemplates"/>
+                <property name="templates" ref="templates"/>
+                <property name="moduleName" value="User"/>
+                <property name="packagePath" value="com.zl.user"/>
+                <property name="templateValueList" ref="templateValueList"/>
+        </bean>
+
+        <bean id="freemarkerConfiguration" class="freemarker.template.Configuration"/>
+
+        <bean id="publicTemplates" class="java.util.ArrayList">
+            <constructor-arg>
+                <list>
+                    <value type="java.lang.String">classRoot/dao/Dialect$java.ftl</value>
+                    <value type="java.lang.String">classRoot/dao/base/OracleDialect$java.ftl</value>
+                    <value type="java.lang.String">classRoot/dao/base/PageExecutor$java.ftl</value>
+                    <value type="java.lang.String">classRoot/dao/base/ReflectUtil$java.ftl</value>
+                    <value type="java.lang.String">classRoot/dao/impl/BaseDAO$java.ftl</value>
+                    <value type="java.lang.String">classRoot/util/Configuration$java.ftl</value>
+                    <value type="java.lang.String">classRoot/Constants$java.ftl</value>
+                    <value type="java.lang.String">resources/applicationContext-jdbc$xml.ftl</value>
+                    <value type="java.lang.String">resources/applicationContext-module$xml.ftl</value>
+                    <value type="java.lang.String">resources/config$properties.ftl</value>
+                    <value type="java.lang.String">resources/config-mg_zh_CN$properties.ftl</value>
+                    <value type="java.lang.String">resources/log4j$properties.ftl</value>
+                    <value type="java.lang.String">resources/sqlMapConfig-module$xml.ftl</value>
+                </list>
+            </constructor-arg>
+        </bean>
+        <bean id="templates" class="java.util.ArrayList">
+            <constructor-arg>
+                <list>
+                    <value type="java.lang.String">classRoot/entity/ClassName$java.ftl</value>
+                    <value type="java.lang.String">classRoot/service/ClassNameService$java.ftl</value>
+                    <value type="java.lang.String">classRoot/service/impl/ClassNameServiceImpl$java.ftl</value>
+                    <value type="java.lang.String">classRoot/dao/ClassNameDAO$java.ftl</value>
+                    <value type="java.lang.String">classRoot/dao/impl/ClassNameDAOImpl$java.ftl</value>
+                    <value type="java.lang.String">resources/packagePath/dao/impl/ibatisXml/ClassName$xml.ftl</value>
+                </list>
+            </constructor-arg>
+        </bean>
+        <bean id="templateValueList" class="java.util.ArrayList">
+            <constructor-arg>
+                <list>
+                    <bean class="com.zl.codeGenerator.entity.TemplateValue">
+                        <property name="className" value="User"/>
+                        <property name="remark" value="用户信息"/>
+                        <property name="tableName" value="T_USER"/>
+                        <property name="columns"  ref="columnList1"/>
+                    </bean>
+                </list>
+            </constructor-arg>
+        </bean>
+
+        <bean id="columnList1" class="java.util.ArrayList">
+            <constructor-arg>
+                <list>
+                    <bean class="com.zl.codeGenerator.entity.TemplateColumn">
+                        <property name="name" value="userId"/>
+                        <property name="type" value="long"/>
+                        <property name="remark" value="用户id"/>
+                        <property name="columnName" value="USER_ID"/>
+                        <property name="pkFlag" value="true"/>
+                    </bean>
+                    <bean class="com.zl.codeGenerator.entity.TemplateColumn">
+                        <property name="name" value="userName"/>
+                        <property name="type" value="String"/>
+                        <property name="remark" value="用户姓名"/>
+                        <property name="columnName" value="USER_NAME"/>
+                        <property name="pkFlag" value="false"/>
+                    </bean>
+                </list>
+            </constructor-arg>
+        </bean>
+</beans>

@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Class-Path: spring-expression-3.2.3.RELEASE.jar slf4j-api-1.7.2.jar sp
+ ring-beans-3.2.3.RELEASE.jar log4j-1.2.8.jar aopalliance-1.0.jar slf4
+ j-log4j12-1.7.2.jar spring-aop-3.2.3.RELEASE.jar spring-context-3.2.3
+ .RELEASE.jar commons-logging-1.1.1.jar commons-pool-1.5.2.jar spring-
+ context-support-3.2.3.RELEASE.jar spring-core-3.2.3.RELEASE.jar
+Main-Class: com.zl.codeGenerator.Generator
+
