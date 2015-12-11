@@ -7,6 +7,7 @@
         <bean id="mainService"
             class="com.zl.codeGenerator.service.impl.MainServiceImpl">
                 <property name="configuration" ref="freemarkerConfiguration"/>
+                <property name="groovyFactory" ref="groovyFactory"/>
                 <property name="templatePath" value="F:/Program/Java/CodeGenerator/target/classes/templates"/>
                 <property name="moduleDir" value="F:/Program/Java/"/>
                 <property name="publicTemplates" ref="publicTemplates"/>
@@ -17,6 +18,8 @@
         </bean>
 
         <bean id="freemarkerConfiguration" class="freemarker.template.Configuration"/>
+
+        <bean id="groovyFactory" class="com.zl.codeGenerator.dynamic.GroovyFactory"/>
 
         <bean id="publicTemplates" class="java.util.ArrayList">
             <constructor-arg>

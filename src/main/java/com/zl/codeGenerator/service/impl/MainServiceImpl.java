@@ -1,5 +1,6 @@
 package com.zl.codeGenerator.service.impl;
 
+import com.zl.codeGenerator.dynamic.GroovyFactory;
 import com.zl.codeGenerator.entity.TemplateValue;
 import com.zl.codeGenerator.service.MainService;
 import freemarker.template.Configuration;
@@ -15,6 +16,8 @@ import java.util.*;
  */
 public class MainServiceImpl implements MainService{
     private Configuration configuration;
+
+    private GroovyFactory groovyFactory;
 
     //模板路径
     private String templatePath;
@@ -42,6 +45,14 @@ public class MainServiceImpl implements MainService{
 
     //java文件根目录
     private String classRootDir;
+
+    public GroovyFactory getGroovyFactory() {
+        return groovyFactory;
+    }
+
+    public void setGroovyFactory(GroovyFactory groovyFactory) {
+        this.groovyFactory = groovyFactory;
+    }
 
     public String getResourcesDir() {
         return resourcesDir;
@@ -222,5 +233,9 @@ public class MainServiceImpl implements MainService{
                 fileOutputStream.close();
             }
         }
+    }
+
+    public void compileAndLoad(){
+        groovyFactory.loadAndInit("Hello").print();
     }
 }

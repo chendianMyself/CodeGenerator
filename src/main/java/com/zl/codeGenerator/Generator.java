@@ -31,6 +31,7 @@ public class Generator {
         MainService mainService = setUp();
         try {
             mainService.generate();
+//            mainService.compileAndLoad();
         } catch (Exception e) {
             e.printStackTrace();
         }
