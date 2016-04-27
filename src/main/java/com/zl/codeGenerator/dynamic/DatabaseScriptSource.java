@@ -9,8 +9,9 @@ import java.util.Date;
 
 /**
  * Created by Administrator on 2015/12/11.
+ * 实现自己的的数据库ScriptSource
  */
-public class GroovyScriptSource implements ScriptSource {
+public class DatabaseScriptSource implements ScriptSource {
     //脚本名称
     private String scriptName;
     //上一次代码更新时间
@@ -18,9 +19,15 @@ public class GroovyScriptSource implements ScriptSource {
     //更新时间修改监视器
     private final Object lastModifiedMonitor = new Object ();
 
-    public GroovyScriptSource(String scriptName){
+    public DatabaseScriptSource(String scriptName){
         this.scriptName = scriptName;
     }
+
+    /**
+     * 获取脚本源代码
+     * @return
+     * @throws IOException
+     */
     @Override
     public String getScriptAsString() throws IOException {
         //加锁，防止并发
@@ -44,6 +51,10 @@ public class GroovyScriptSource implements ScriptSource {
         return script;
     }
 
+    /**
+     * 确定脚本是否被修改
+     * @return
+     */
     @Override
     public boolean isModified() {
         synchronized (this.lastModifiedMonitor)
@@ -54,6 +65,10 @@ public class GroovyScriptSource implements ScriptSource {
         }
     }
 
+    /**
+     * 脚本的建议类名
+     * @return
+     */
     @Override
     public String suggestedClassName() {
         return scriptName;

@@ -18,6 +18,8 @@ public class GroovyFactory implements ApplicationContextAware {
     private ApplicationContext parentContext;
     //动态算法ApplicationContext
     private GenericApplicationContext dynamicContext;
+    //刷新时间
+    private static final int DEFAULT_REFRESH_CHECK_DELAY = 10 * 60 * 1000;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext)
@@ -30,20 +32,22 @@ public class GroovyFactory implements ApplicationContextAware {
         dynamicContext = new GenericApplicationContext ();
         //设置父ApplicationContext
         dynamicContext.setParent (parentContext);
-        //该bean负责用由工厂创建的实际对象替换工厂bean
+        //该bean负责用由工厂创建的实际对象将工厂bean替换
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder
                 .rootBeanDefinition(
-                        "com.zl.codeGenerator.dynamic.FactoryPostProcessor")
+                        "com.zl.codeGenerator.dynamic.CustomScriptFactoryPostProcessor")
                 .setLazyInit (false);
-        dynamicContext.registerBeanDefinition ("scriptPostProcessor",
+        //设置自动判断代码是否已经更新的时间
+        beanDefinitionBuilder.addPropertyValue("defaultRefreshCheckDelay",DEFAULT_REFRESH_CHECK_DELAY);
+        dynamicContext.registerBeanDefinition ("scriptFactoryPostProcessor",
                 beanDefinitionBuilder.getBeanDefinition ());
         dynamicContext.refresh ();
-        //定义工厂bean，通过取得脚步创建实际对象
-        String location = FactoryPostProcessor.MY_SCRIPT_PREFIX + scriptName;
+        //定义工厂bean，通过取得脚本创建实际对象
+        String location = CustomScriptFactoryPostProcessor.MY_SCRIPT_PREFIX + scriptName;
         BeanDefinitionBuilder scriptBuilder = BeanDefinitionBuilder
                 .rootBeanDefinition (
                         "org.springframework.scripting.groovy.GroovyScriptFactory")
-                .addConstructorArg (location);
+                .addConstructorArg(location);
         dynamicContext.registerBeanDefinition (scriptName,
                 scriptBuilder.getBeanDefinition ());
         //获取实体返回

@@ -30,8 +30,8 @@ public class Generator {
     public static void main(String[] args){
         MainService mainService = setUp();
         try {
-            mainService.generate();
-//            mainService.compileAndLoad();
+//            mainService.generate();
+            mainService.compileAndLoad();
         } catch (Exception e) {
             e.printStackTrace();
         }
