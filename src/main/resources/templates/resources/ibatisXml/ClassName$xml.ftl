@@ -18,15 +18,20 @@
     </#list>
     </resultMap>
 
+
+
     <insert id="create" parameterClass="${className}">
-    <#list columns as column>
-        <#if column.pkFlag>
-        <selectKey keyProperty="${column.name}" resultClass="java.lang.${column.type}">
-            SELECT S_${tableName}.NEXTVAL FROM DUAL
-            <#--主键字段-->
-            <#assign pkName = column.name/>
-            <#assign pkColumnName = column.columnName/>
-        </selectKey>
+        <#list columns as column>
+            <#if column.pkFlag>
+                <#--主键字段-->
+                <#assign pkName = column.name/>
+                <#assign pkColumnName = column.columnName/>
+            </#if>
+            <#if column.autoFlag>
+                <#--自增id-->
+                <selectKey keyProperty="${column.name}" resultClass="java.lang.${column.type}">
+                    SELECT S${tableName?substring(1)}.NEXTVAL FROM DUAL
+                </selectKey>
             </#if>
         </#list>
             INSERT INTO ${tableName}(
@@ -77,8 +82,28 @@
             ORDER BY T.${pkColumnName} DESC
     </select>
 
-    <update id="update" parameterClass="${className}">
-            UPDATE  T_USER T
+    <select id="searchCount" resultClass="java.lang.Long"
+            parameterClass="${className}">
+        SELECT COUNT(T.${pkColumnName}) from ${tableName} T
+        <dynamic prepend="WHERE">
+        <#list columns as column>
+            <#if column.type == "Double" || column.type == "double"
+            || column.type == "Integer" || column.type == "int"
+            || column.type == "Long" || column.type == "long">
+                <isGreaterThan prepend="AND" property="${column.name}" compareValue="0">
+                    T.${column.columnName} = #${column.name}#
+                </isGreaterThan>
+            <#else>
+                <isNotEmpty prepend="AND" property="${column.name}">
+                    T.${column.columnName} = #${column.name}#
+                </isNotEmpty>
+            </#if>
+        </#list>
+        </dynamic>
+    </select>
+
+    <update id="modify" parameterClass="${className}">
+            UPDATE  ${tableName} T
             SET
         <#list columns as column>
             <#if !column.pkFlag>

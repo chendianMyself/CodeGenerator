@@ -1,13 +1,13 @@
 package ${packagePath}.entity;
 
 <#--获取要导入的类型-->
-<#assign DateFlag=false/>
+<#assign dateFlag = false/>
 <#list columns as column>
     <#if column.type == "Date">
-        <#assign DateFlag=true/>
+        <#assign dateFlag = true/>
     </#if>
 </#list>
-<#if DateFlag == true>
+<#if dateFlag == true>
 import java.util.Date;
 </#if>
 
@@ -27,9 +27,11 @@ public class ${className}{
     <#list columns as column>
     public void set${column.name?cap_first}(${column.type} ${column.name}){
         this.${column.name} = ${column.name};
-    };
-    public ${column.type} get${column.name?cap_first}(){
-        return ${column.name};
     }
+
+    public ${column.type} get${column.name?cap_first}(){
+        return this.${column.name};
+    }
+
     </#list>
 }

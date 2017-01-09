@@ -29,6 +29,19 @@ public class TemplateColumn {
      */
     private boolean pkFlag;
 
+    /**
+     * 是否自增id
+     */
+    private boolean autoFlag;
+
+    public boolean isAutoFlag() {
+        return autoFlag;
+    }
+
+    public void setAutoFlag(boolean autoFlag) {
+        this.autoFlag = autoFlag;
+    }
+
     public String getColumnName() {
         return columnName;
     }
