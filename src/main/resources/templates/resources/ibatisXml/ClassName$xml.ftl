@@ -5,9 +5,9 @@
         "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="${className?uncap_first}">
-    <typeAlias alias=" ${className}" type="${packagePath}.entity.${className}"/>
+    <typeAlias alias="${className}" type="${packagePath}.entity.${className}"/>
 
-    <resultMap id="${className?uncap_first}" class="${className}">
+    <resultMap id="${className?uncap_first}Map" class="${className}">
     <#list columns as column>
     <#if column.type == "String" || column.type == "Date">
         <result property="${column.name}" column="${column.columnName}"/>
@@ -29,7 +29,7 @@
             </#if>
             <#if column.autoFlag>
                 <#--自增id-->
-                <selectKey keyProperty="${column.name}" resultClass="java.lang.${column.type}">
+                <selectKey keyProperty="${column.name}" resultClass="java.lang.Long">
                     SELECT S${tableName?substring(1)}.NEXTVAL FROM DUAL
                 </selectKey>
             </#if>
@@ -63,7 +63,7 @@
     <!--注：isNotEmpty表示既不为空也不为null,isNotNull仅表示不为null-->
     <select id="search" resultMap="${className?uncap_first}.${className?uncap_first}"
             parameterClass="${className}">
-            SELECT T.* from ${tableName} T
+            SELECT T.* FROM ${tableName} T
                 <dynamic prepend="WHERE">
             <#list columns as column>
                 <#if column.type == "Double" || column.type == "double"

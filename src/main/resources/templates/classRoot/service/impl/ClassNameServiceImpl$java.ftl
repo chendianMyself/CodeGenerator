@@ -22,7 +22,7 @@ public class ${className}ServiceImpl implements ${className}Service{
 
     private ${className}DAO ${className?uncap_first}DAO;
 
-    public ${className}DAO ${className}DAO() {
+    public ${className}DAO get${className}DAO() {
         return ${className?uncap_first}DAO;
     }
 
