@@ -61,10 +61,10 @@
     </delete>
 
     <!--注：isNotEmpty表示既不为空也不为null,isNotNull仅表示不为null-->
-    <select id="search" resultMap="${className?uncap_first}.${className?uncap_first}"
+    <select id="search" resultMap="${className?uncap_first}.${className?uncap_first}Map"
             parameterClass="${className}">
             SELECT T.* FROM ${tableName} T
-                <dynamic prepend="WHERE">
+            <dynamic prepend="WHERE">
             <#list columns as column>
                 <#if column.type == "Double" || column.type == "double"
                     || column.type == "Integer" || column.type == "int"
@@ -103,14 +103,23 @@
     </select>
 
     <update id="modify" parameterClass="${className}">
-            UPDATE  ${tableName} T
-            SET
+        UPDATE  ${tableName} T
+        <dynamic prepend="SET">
         <#list columns as column>
-            <#if !column.pkFlag>
-                T.${column.columnName} = #${column.name}#
+            <#if column.type == "Double" || column.type == "double"
+            || column.type == "Integer" || column.type == "int"
+            || column.type == "Long" || column.type == "long">
+                <isGreaterThan prepend="," property="${column.name}" compareValue="0">
+                    T.${column.columnName} = #${column.name}#
+                </isGreaterThan>
+            <#else>
+                <isNotEmpty prepend="," property="${column.name}">
+                    T.${column.columnName} = #${column.name}#
+                </isNotEmpty>
             </#if>
         </#list>
-            WHERE
+        </dynamic>
+        WHERE
             T.${pkColumnName} = #${pkName}#
     </update>
 </sqlMap>
